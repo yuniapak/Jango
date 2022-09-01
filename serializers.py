@@ -15,7 +15,7 @@ class PlayerSerializer(serializers.ModelSerializer):
     team= serializers.SlugRelatedField(
 
         read_only = True,
-        slug_field = 'team',
+        slug_field = 'team_id',
     )
     class Meta:
         model = Player

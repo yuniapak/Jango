@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from django.core import serializers
 from django.http import HttpResponse
+from django.forms.models import model_to_dict
+import json
 # Create your views here.
 class TeamList(generics.ListCreateAPIView):
     queryset = Team.objects.all()
@@ -35,3 +37,15 @@ def getByPlayerName(request):
         return HttpResponse(serializer, content_type='application/json')
     else:
         return Response(name, status=400)
+
+
+@api_view(['POST'])
+def createPlayer(request):
+    team_1 = Team.objects.get(pk=1)
+    print(team_1)
+    request.body
+    new_player=Player( team=team_1, name = 'Matt',position = 'player',age = 30,injuries = 'none')
+    new_player.save()
+    player_dict=model_to_dict(new_player)
+    serializer=json.dumps(player_dict)
+    return HttpResponse(serializer, content_type='application/json')

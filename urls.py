@@ -8,4 +8,5 @@ urlpatterns =[
     path('team/<int:pk>', views.TeamDetail.as_view(), name="team_details"),
     # path('player/<int:pk>', views.PlayerDetail.as_view(), name="player_details"),
     path('player_name', views.getByPlayerName, name="player_details"),
+    path('body', views.createPlayer, name='something'),
 ]
