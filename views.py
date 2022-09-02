@@ -41,11 +41,22 @@ def getByPlayerName(request):
 
 @api_view(['POST'])
 def createPlayer(request):
-    team_1 = Team.objects.get(pk=1)
-    print(team_1)
-    request.body
-    new_player=Player( team=team_1, name = 'Matt',position = 'player',age = 30,injuries = 'none')
+    # team_1 = Team.objects.get(pk=1)
+    pk= request.query_params.get('pk')
+    chosen_team = Team.objects.get(pk__iexact = pk)
+    # team_dict=model_to_dict(chosen_team)
+    # get_team= chosen_team.get
+    # serializer = serializers.serialize('json', get_team)
+    print(chosen_team)
+    # request.body
+    # new_player=Player( team=team_1, name = request.body, position = request.body, age = request.body.age, injuries = request.body.injuries)
+    # new_player.save()
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    # player_dict = body['name', 'position', 'age', 'injuries']
+    new_player=Player( team = chosen_team, name = body['name'], position = body['position'], age = body['age'], injuries = body['injuries'])
     new_player.save()
-    player_dict=model_to_dict(new_player)
-    serializer=json.dumps(player_dict)
-    return HttpResponse(serializer, content_type='application/json')
+    # team_dict=model_to_dict(new_player['team'],player_dict)
+    # serializer = serializers.serialize('json', new_player)
+    # serializer=json.dumps(team_dict)
+    return HttpResponse(new_player, content_type='application/json')
